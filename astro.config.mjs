@@ -1,42 +1,23 @@
 // @ts-check
-
+import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import { defineConfig, fontProviders } from 'astro/config';
-
 import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://example.com',
-  integrations: [mdx(), sitemap()],
+  // 1. Ganti ini nanti dengan domain asli kamu (misal: https://difabelzone.or.id)
+  // Alamat ini penting agar SEO Sitemap bisa digenerate dengan benar.
+  site: 'https://difabelzone-indonesia.vercel.app', 
 
-  fonts: [
-      {
-          provider: fontProviders.local(),
-          name: 'Atkinson',
-          cssVariable: '--font-atkinson',
-          fallbacks: ['sans-serif'],
-          options: {
-              variants: [
-                  {
-                      src: ['./src/assets/fonts/atkinson-regular.woff'],
-                      weight: 400,
-                      style: 'normal',
-                      display: 'swap',
-                  },
-                  {
-                      src: ['./src/assets/fonts/atkinson-bold.woff'],
-                      weight: 700,
-                      style: 'normal',
-                      display: 'swap',
-                  },
-              ],
-          },
-      },
-	],
+  integrations: [
+    mdx(), 
+    sitemap() // Menghasilkan sitemap-index.xml otomatis untuk Google
+  ],
 
   vite: {
     plugins: [tailwindcss()],
   },
+
+  // Catatan: Bagian fonts Atkinson dihapus karena kita sudah pakai Poppins via CSS.
 });

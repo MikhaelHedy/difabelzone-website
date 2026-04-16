@@ -1,2 +1,2 @@
 export const SITE_TITLE = 'Difabelzone Indonesia';
-export const SITE_DESCRIPTION = 'Empowering lives through the art of handmade batik and inclusive community.';
+export const SITE_DESCRIPTION = 'Empowering artisans with disabilities through authentic handmade Batik. A decade of resilience, inclusive tourism, and heritage preservation in Yogyakarta.'
