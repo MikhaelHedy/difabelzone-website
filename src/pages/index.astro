@@ -1,49 +1,176 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import MainLayout from '../layouts/MainLayout.astro';
+import { client } from '../lib/sanity';
+import { urlFor } from '../lib/urlFor';
+
+// FETCH DATA DARI SANITY dengan proteksi jika data null
+const data = (await client.fetch(`*[_type == "landingPage"][0]`)) || {};
+
+// FALLBACK CONTENT (Jika Sanity belum diisi)
+const heroTitle = data?.heroTitle || "Growing Together, for Goodness and Prosperity.";
+const heroDesc = data?.heroDescription || "A decade of resilient artistry. We are a sanctuary where traditional handmade batik becomes a pathway to independence for people with disabilities.";
+const historyText = data?.historyContent || "Difi stands as a living testament to human resilience. What started in 2014 as a small gathering of artisans with disabilities has evolved into a global symbol of inclusive excellence.";
+
+// FALLBACK IMAGES
+const fallbackHero = "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?auto=format&fit=crop&q=80&w=800";
+const fallbackHist1 = "https://images.unsplash.com/photo-1590736704728-f4730bb30770?auto=format&fit=crop&q=80&w=400";
+const fallbackHist2 = "https://images.unsplash.com/photo-1544967082-d9d25d867d66?auto=format&fit=crop&q=80&w=400";
+const fallbackHist3 = "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&q=80&w=400";
+const fallbackArt = "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=800";
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+<MainLayout title="Difabelzone Indonesia | Crafting Inclusivity">
+	<!-- HERO SECTION -->
+	<section class="relative min-h-screen flex items-center justify-center pt-32 pb-20 overflow-hidden bg-[#fafafa]">
+		<!-- Background Dot Pattern -->
+		<div class="absolute inset-0 opacity-[0.05] pointer-events-none text-[#78350f]">
+			<svg width="100%" height="100%"><rect width="100%" height="100%" fill="url(#pattern)"></rect><defs><pattern id="pattern" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="currentColor"></circle></pattern></defs></svg>
+		</div>
+
+		<div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center relative z-10">
+			<!-- LEFT: Text -->
+			<div class="text-left space-y-8 order-2 lg:order-1 text-left">
+				<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-50 border border-amber-100 text-[#78350f] text-[10px] font-black tracking-[0.2em] uppercase">
+					<span class="relative flex h-2 w-2">
+						<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+						<span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+					</span>
+					Since 2014
+				</div>
+				<h1 class="text-5xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] tracking-tight text-left">
+					{heroTitle.includes(',') ? heroTitle.split(',')[0] + ',' : heroTitle} <br/>
+					<span class="text-[#78350f] italic font-serif-display lowercase">
+                        {heroTitle.includes(',') ? heroTitle.split(',')[1] : ""}
+                    </span>
+				</h1>
+				<p class="text-lg text-gray-600 leading-relaxed max-w-lg font-medium text-left">
+					{heroDesc}
+				</p>
+				<div class="flex flex-wrap gap-5 pt-4">
+					<a href="#history" class="px-8 py-4 bg-[#78350f] text-white rounded-2xl font-bold hover:bg-black transition-all shadow-xl shadow-amber-900/20 active:scale-95 no-underline">Our Journey</a>
+					<a href="#artistry" class="px-8 py-4 border-2 border-gray-200 text-gray-800 rounded-2xl font-bold hover:bg-gray-100 transition-all active:scale-95 no-underline">The Artistry</a>
+				</div>
+			</div>
+
+			<!-- RIGHT: Hero Image -->
+			<div class="relative order-1 lg:order-2 flex justify-center">
+				<div class="relative w-full max-w-[450px] aspect-[4/5] bg-gray-100 rounded-[2.5rem] overflow-hidden shadow-2xl border-[12px] border-white -rotate-1 hover:rotate-0 transition-all duration-700">
+					<img 
+                        src={data?.heroImage ? urlFor(data.heroImage)?.url() : fallbackHero} 
+                        alt="Artisan working" 
+                        class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 scale-110 hover:scale-100"
+                    />
+				</div>
+				<div class="absolute -bottom-8 -right-4 lg:-right-8 bg-white p-5 lg:p-7 rounded-[2rem] shadow-2xl max-w-[220px] rotate-3 border-t border-gray-50 text-left">
+					<div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 font-bold mb-2">10+</div>
+					<p class="text-sm font-black text-gray-900 leading-tight text-left">Years of Social Impact</p>
+					<p class="text-[11px] text-gray-500 leading-snug font-medium text-left">Empowering lives through authentic craftsmanship since 2014.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- SECTION 2: HISTORY -->
+	<section id="history" class="py-32 bg-white relative overflow-hidden">
+		<div class="max-w-6xl mx-auto px-6">
+			<div class="grid lg:grid-cols-2 gap-16 items-center">
+				<!-- Image Grid -->
+				<div class="relative order-2 lg:order-1">
+					<div class="grid grid-cols-2 gap-4">
+						<div class="space-y-4 pt-12">
+							<div class="aspect-[3/4] bg-gray-100 rounded-3xl overflow-hidden shadow-lg border-4 border-white text-left">
+								<img src={data?.historyImage1 ? urlFor(data.historyImage1)?.url() : fallbackHist1} alt="History 1" class="w-full h-full object-cover">
+							</div>
+							<div class="aspect-square bg-amber-800 rounded-3xl flex items-center justify-center p-8 text-white font-bold text-center leading-tight">Preserving Heritage Since 2014</div>
+						</div>
+						<div class="space-y-4">
+							<div class="aspect-square bg-gray-200 rounded-3xl overflow-hidden shadow-lg border-4 border-white text-left">
+								<img src={data?.historyImage2 ? urlFor(data.historyImage2)?.url() : fallbackHist2} alt="History 2" class="w-full h-full object-cover">
+							</div>
+							<div class="aspect-[3/4] bg-gray-100 rounded-3xl overflow-hidden shadow-lg border-4 border-white text-left">
+								<img src={data?.historyImage3 ? urlFor(data.historyImage3)?.url() : fallbackHist3} alt="History 3" class="w-full h-full object-cover">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="space-y-8 order-1 lg:order-2 text-left">
+					<div class="space-y-2 text-left">
+						<h2 class="text-amber-800 font-black text-sm uppercase tracking-widest text-left">Our Journey</h2>
+						<h3 class="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight text-left">10+ Years of Resilient Survival.</h3>
+					</div>
+					<div class="h-1 w-20 bg-amber-600 rounded-full"></div>
+					<div class="space-y-6 text-gray-600 text-lg leading-relaxed font-medium text-left">
+						<p>{historyText}</p>
+						<p class="italic font-bold text-gray-900 border-l-4 border-amber-600 pl-4 text-left">
+							"We don't just make batik; we weave hope, dignity, and a future for everyone."
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- SECTION 3: PURPOSE -->
+	<section id="purpose" class="py-32 bg-[#1a1a1a] text-white rounded-[3rem] mx-4 lg:mx-8 relative overflow-hidden">
+		<div class="absolute top-0 right-0 w-96 h-96 bg-amber-900/20 blur-[120px] rounded-full"></div>
+		<div class="max-w-6xl mx-auto px-6 relative z-10 text-center">
+			<div class="max-w-3xl mx-auto mb-20 space-y-4">
+				<h2 class="text-amber-400 font-bold text-sm uppercase tracking-widest">The Purpose</h2>
+				<h3 class="text-4xl lg:text-5xl font-bold text-left md:text-center">Inclusion is not a goal. <br/> <span class="text-amber-500 italic font-serif-display lowercase">It is our foundation.</span></h3>
+			</div>
+			<div class="grid md:grid-cols-3 gap-8 text-left">
+				<div class="p-10 rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-amber-500/50 transition-all text-left">
+					<h4 class="text-xl font-bold mb-4 text-amber-500 uppercase tracking-tighter text-left">Safe Sanctuary</h4>
+					<p class="text-gray-400 font-medium leading-relaxed text-left">A barrier-free environment where every artisan feels safe, seen, and supported to discover their potential.</p>
+				</div>
+				<div class="p-10 rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-amber-500/50 transition-all text-left">
+					<h4 class="text-xl font-bold mb-4 text-amber-500 uppercase tracking-tighter text-left">Skill Autonomy</h4>
+					<p class="text-gray-400 font-medium leading-relaxed text-left">Empowering artisans with professional mastery of handmade batik, moving from charity to sustainable independence.</p>
+				</div>
+				<div class="p-10 rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-amber-500/50 transition-all text-left">
+					<h4 class="text-xl font-bold mb-4 text-amber-500 uppercase tracking-tighter text-left">Ethical Heritage</h4>
+					<p class="text-gray-400 font-medium leading-relaxed text-left">Preserving the authentic "Batik Tulis" technique as a universal language that transcends physical boundaries.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- SECTION 4: ARTISTRY -->
+	<section id="artistry" class="py-32 bg-[#fafafa]">
+		<div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center text-left">
+			<div class="relative order-1">
+				<div class="aspect-square bg-white p-4 rounded-[3rem] shadow-xl rotate-3 overflow-hidden text-left">
+					<img src={data?.artistryImage ? urlFor(data.artistryImage)?.url() : fallbackArt} alt="Batik Detail" class="w-full h-full object-cover rounded-[2.5rem]">
+				</div>
+				<div class="absolute -top-6 -right-6 bg-amber-50 border border-amber-200 p-6 rounded-3xl shadow-lg max-w-[180px] text-left">
+					<p class="text-xs font-black text-amber-900 uppercase mb-2 text-left">Technique</p>
+					<p class="text-sm italic font-medium leading-tight text-gray-700 text-left">"Batik Tulis" — The slowest and most authentic form of hand-drawn wax resist.</p>
+				</div>
+			</div>
+			<div class="space-y-8 order-2 text-left">
+				<h2 class="text-amber-800 font-black text-sm uppercase tracking-widest text-left">The Artistry</h2>
+				<h3 class="text-4xl lg:text-5xl font-bold text-gray-900 text-left">Authentic Heritage in Every Drop.</h3>
+				<p class="text-gray-600 text-lg font-medium leading-relaxed text-left">We honor the "Slow Process." Every piece of Difi batik is a labor of love, meticulously hand-drawn using techniques passed down through generations.</p>
+				<p class="text-gray-600 text-lg font-medium leading-relaxed text-left">Our artisans pour their resilience and spirit into the fabric, creating one-of-a-kind masterpieces.</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- SECTION 5: CONNECT -->
+	<section id="connect" class="py-32 bg-white px-4">
+		<div class="max-w-6xl mx-auto bg-amber-50 rounded-[4rem] p-12 lg:p-24 space-y-10 text-left">
+			<h2 class="text-4xl lg:text-6xl font-extrabold text-gray-900 leading-tight text-left">Let’s Grow Together.</h2>
+			<p class="text-xl text-gray-600 max-w-2xl font-medium leading-relaxed text-left">Whether you are looking for inclusive tourism, creative partnerships, or global collaboration, our doors are always open.</p>
+			<div class="flex flex-col sm:flex-row gap-6">
+				<a href="https://wa.me/62812345678" target="_blank" class="px-10 py-5 bg-[#78350f] text-white rounded-2xl font-bold text-lg no-underline shadow-xl shadow-amber-900/20 hover:bg-black transition-all text-center">Partner With Us</a>
+				<a href="mailto:hello@difabelzone.id" class="px-10 py-5 bg-white text-gray-900 border-2 border-gray-200 rounded-2xl font-bold text-lg no-underline hover:bg-gray-50 transition-all text-center">Email Inquiry</a>
+			</div>
+		</div>
+	</section>
+
+	<footer class="py-20 bg-gray-50 border-t border-gray-100 text-center space-y-4">
+		<h2 class="text-2xl font-bold text-amber-900 font-sans">Difabelzone Indonesia</h2>
+		<p class="text-gray-400 font-medium font-sans">&copy; 2024 Difabelzone Indonesia. All rights reserved. Yogyakarta, Indonesia.</p>
+	</footer>
+</MainLayout>
