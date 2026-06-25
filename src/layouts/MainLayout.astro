@@ -1,20 +1,37 @@
 ---
+// src/layouts/MainLayout.astro
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
-import '../styles/global.css';
+import Footer from '../components/Footer.astro'; // Kita akan buat file footer terpisah agar rapi
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
-const { title, description } = Astro.props;
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+}
+
+const { 
+	title = SITE_TITLE, 
+	description = SITE_DESCRIPTION, 
+	image 
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 	<head>
-		<BaseHead title={title} description={description} />
+		<!-- Mengirim data title, desc, dan image ke BaseHead untuk SEO -->
+		<BaseHead title={title} description={description} image={image} />
 	</head>
-	<body class="bg-white text-gray-900 antialiased">
+	<body class="bg-[#fafafa] text-gray-900 antialiased selection:bg-amber-100 selection:text-amber-900">
 		<Header />
+		
 		<main>
-			<slot />
+			<slot /> <!-- Tempat isi konten dari index.astro -->
 		</main>
+
+		<!-- Kita panggil Footer di sini agar muncul di semua halaman -->
+		<Footer />
 	</body>
 </html>

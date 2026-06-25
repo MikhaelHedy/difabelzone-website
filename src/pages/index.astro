@@ -3,8 +3,8 @@ import MainLayout from '../layouts/MainLayout.astro';
 import { client } from '../lib/sanity';
 import { urlFor } from '../lib/urlFor';
 
-// FETCH DATA DARI SANITY dengan proteksi jika data null
-const data: any = (await client.fetch(`*[_type == "landingPage"][0]`)) || {};
+// FETCH DATA DARI SANITY - Gunakan casting 'any' agar TS tidak rewel
+const data = (await client.fetch(`*[_type == "landingPage"][0]`)) || ({} as any);
 
 // FALLBACK CONTENT (Jika Sanity belum diisi)
 const heroTitle = data?.heroTitle || "Growing Together, for Goodness and Prosperity.";
@@ -29,34 +29,34 @@ const fallbackArt = "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?a
 
 		<div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-10 md:gap-16 items-center relative z-10">
 			<!-- LEFT: Text -->
-			<div class="text-left space-y-6 md:space-y-8 order-2 lg:order-1">
-				<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-100 text-[#78350f] text-[9px] md:text-[10px] font-black tracking-[0.2em] uppercase">
+			<div class="text-left space-y-6 md:space-y-8 order-2 lg:order-1 text-left">
+				<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-100 text-[#78350f] text-[9px] md:text-[10px] font-black tracking-[0.2em] uppercase text-left">
 					<span class="relative flex h-2 w-2">
 						<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
 						<span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
 					</span>
 					Since 2014
 				</div>
-				<h1 class="text-4xl md:text-5xl lg:text-7xl font-extrabold text-gray-900 leading-[1.2] md:leading-[1.1] tracking-tight">
+				<h1 class="text-4xl md:text-5xl lg:text-7xl font-extrabold text-gray-900 leading-[1.2] md:leading-[1.1] tracking-tight text-left text-left">
 					{heroTitle.includes(',') ? heroTitle.split(',')[0] + ',' : heroTitle} <br class="hidden md:block"/>
-					<span class="text-[#78350f] italic font-serif-display lowercase">
+					<span class="text-[#78350f] italic font-serif-display lowercase text-left text-left">
                         {heroTitle.includes(',') ? heroTitle.split(',')[1] : ""}
                     </span>
 				</h1>
-				<p class="text-base md:text-lg text-gray-600 leading-relaxed max-w-lg font-medium">
+				<p class="text-base md:text-lg text-gray-600 leading-relaxed max-w-lg font-medium text-left text-left text-left">
 					{heroDesc}
 				</p>
-				<div class="flex flex-col sm:flex-row gap-4 pt-2 md:pt-4">
+				<div class="flex flex-col sm:flex-row gap-4 pt-2 md:pt-4 text-left">
 					<a href="#history" class="px-8 py-4 bg-[#78350f] text-white text-center rounded-2xl font-bold hover:bg-black transition-all shadow-xl shadow-amber-900/20 active:scale-95 no-underline">Our Journey</a>
 					<a href="#artistry" class="px-8 py-4 border-2 border-gray-200 text-gray-800 text-center rounded-2xl font-bold hover:bg-gray-100 transition-all active:scale-95 no-underline">The Artistry</a>
 				</div>
 			</div>
 
-			<!-- RIGHT: Hero Image (FIXED CHAINING) -->
-			<div class="relative order-1 lg:order-2 flex justify-center">
+			<!-- RIGHT: Hero Image -->
+			<div class="relative order-1 lg:order-2 flex justify-center text-left">
 				<div class="relative w-full max-w-[320px] md:max-w-[450px] aspect-[4/5] bg-gray-100 rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl border-[8px] md:border-[12px] border-white -rotate-1 hover:rotate-0 transition-all duration-700">
 					<img 
-                        src={data?.heroImage ? urlFor(data.heroImage)?.width(800).format('webp').url() || fallbackHero : fallbackHero} 
+                        src={data.heroImage ? urlFor(data.heroImage as any)!.width(800).format('webp').url() : fallbackHero} 
                         alt="Artisan working" 
                         width="800"
                         height="1000"
@@ -66,45 +66,45 @@ const fallbackArt = "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?a
 				</div>
 				<div class="absolute -bottom-6 -right-2 md:-bottom-8 md:-right-8 bg-white p-4 md:p-7 rounded-[1.5rem] md:rounded-[2rem] shadow-2xl max-w-[180px] md:max-w-[220px] rotate-3 border-t border-gray-50 text-left">
 					<div class="w-8 h-8 md:w-10 md:h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 font-bold mb-2 text-sm md:text-base">10+</div>
-					<p class="text-[12px] md:text-sm font-black text-gray-900 leading-tight">Social Impact</p>
-					<p class="text-[10px] md:text-[11px] text-gray-500 leading-snug font-medium">Empowering lives since 2014.</p>
+					<p class="text-[12px] md:text-sm font-black text-gray-900 leading-tight text-left">Social Mission</p>
+					<p class="text-[10px] md:text-[11px] text-gray-500 leading-snug font-medium text-left">Empowering People with Disabilities.</p>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<!-- SECTION 2: HISTORY (FIXED CHAINING) -->
-	<section id="history" class="py-20 md:py-32 bg-white relative overflow-hidden">
+	<!-- SECTION 2: HISTORY -->
+	<section id="history" class="py-20 md:py-32 bg-white relative overflow-hidden text-left">
 		<div class="max-w-6xl mx-auto px-6">
 			<div class="grid lg:grid-cols-2 gap-12 md:gap-16 items-center">
 				<div class="relative order-2 lg:order-1 text-left">
 					<div class="grid grid-cols-2 gap-3 md:gap-4">
-						<div class="space-y-3 md:space-y-4 pt-8 md:pt-12">
-							<div class="aspect-[3/4] bg-gray-100 rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border-2 md:border-4 border-white">
-								<img src={data?.historyImage1 ? urlFor(data.historyImage1)?.width(400).format('webp').url() || fallbackHist1 : fallbackHist1} alt="History 1" loading="lazy" class="w-full h-full object-cover">
+						<div class="space-y-3 md:space-y-4 pt-8 md:pt-12 text-left">
+							<div class="aspect-[3/4] bg-gray-100 rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border-2 md:border-4 border-white text-left">
+								<img src={data.historyImage1 ? urlFor(data.historyImage1 as any)!.width(400).format('webp').url() : fallbackHist1} alt="History 1" loading="lazy" class="w-full h-full object-cover">
 							</div>
 							<div class="aspect-square bg-amber-800 rounded-2xl md:rounded-3xl flex items-center justify-center p-4 md:p-8 text-white font-bold text-center text-xs md:text-lg leading-tight">Preserving Heritage</div>
 						</div>
-						<div class="space-y-3 md:space-y-4">
-							<div class="aspect-square bg-gray-200 rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border-2 md:border-4 border-white">
-								<img src={data?.historyImage2 ? urlFor(data.historyImage2)?.width(400).format('webp').url() || fallbackHist2 : fallbackHist2} alt="History 2" loading="lazy" class="w-full h-full object-cover">
+						<div class="space-y-3 md:space-y-4 text-left">
+							<div class="aspect-square bg-gray-200 rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border-2 md:border-4 border-white text-left text-left">
+								<img src={data.historyImage2 ? urlFor(data.historyImage2 as any)!.width(400).format('webp').url() : fallbackHist2} alt="History 2" loading="lazy" class="w-full h-full object-cover">
 							</div>
-							<div class="aspect-[3/4] bg-gray-100 rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border-2 md:border-4 border-white">
-								<img src={data?.historyImage3 ? urlFor(data.historyImage3)?.width(400).format('webp').url() || fallbackHist3 : fallbackHist3} alt="History 3" loading="lazy" class="w-full h-full object-cover">
+							<div class="aspect-[3/4] bg-gray-100 rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border-2 md:border-4 border-white text-left text-left">
+								<img src={data.historyImage3 ? urlFor(data.historyImage3 as any)!.width(400).format('webp').url() : fallbackHist3} alt="History 3" loading="lazy" class="w-full h-full object-cover">
 							</div>
 						</div>
 					</div>
 				</div>
 
 				<div class="space-y-6 md:space-y-8 order-1 lg:order-2 text-left">
-					<div class="space-y-2">
-						<h2 class="text-amber-800 font-black text-xs md:text-sm uppercase tracking-widest">Our Journey</h2>
-						<h3 class="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">10+ Years of Resilient Survival.</h3>
+					<div class="space-y-2 text-left">
+						<h2 class="text-amber-800 font-black text-xs md:text-sm uppercase tracking-widest text-left">Our Journey</h2>
+						<h3 class="text-3xl md:text-5xl font-bold text-gray-900 leading-tight text-left">10+ Years of Resilient Survival.</h3>
 					</div>
-					<div class="h-1 w-16 bg-amber-600 rounded-full"></div>
-					<div class="space-y-4 md:space-y-6 text-gray-600 text-base md:text-lg leading-relaxed font-medium">
+					<div class="h-1 w-16 bg-amber-600 rounded-full text-left"></div>
+					<div class="space-y-4 md:space-y-6 text-gray-600 text-base md:text-lg leading-relaxed font-medium text-left">
 						<p>{historyText}</p>
-						<p class="italic font-bold text-gray-900 border-l-4 border-amber-600 pl-4">
+						<p class="italic font-bold text-gray-900 border-l-4 border-amber-600 pl-4 text-left">
 							"We don't just make batik; we weave hope, dignity, and a future for everyone."
 						</p>
 					</div>
@@ -118,42 +118,42 @@ const fallbackArt = "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?a
 		<div class="absolute top-0 right-0 w-64 h-64 md:w-96 md:h-96 bg-amber-900/20 blur-[80px] md:blur-[120px] rounded-full"></div>
 		<div class="max-w-6xl mx-auto px-6 relative z-10 text-center">
 			<div class="max-w-3xl mx-auto mb-12 md:mb-20 space-y-3 md:space-y-4">
-				<h2 class="text-amber-400 font-bold text-xs md:text-sm uppercase tracking-widest">The Purpose</h2>
-				<h3 class="text-3xl md:text-5xl font-bold leading-tight">Inclusion is not a goal. <br/> <span class="text-amber-500 italic font-serif-display lowercase">It is our foundation.</span></h3>
+				<h2 class="text-amber-400 font-bold text-xs md:text-sm uppercase tracking-widest text-left md:text-center text-left md:text-center">The Purpose</h2>
+				<h3 class="text-3xl md:text-5xl font-bold leading-tight text-left md:text-center text-left md:text-center">Inclusion is not a goal. <br/> <span class="text-amber-500 italic font-serif-display lowercase text-left md:text-center">It is our foundation.</span></h3>
 			</div>
-			<div class="grid md:grid-cols-3 gap-6 md:gap-8">
+			<div class="grid md:grid-cols-3 gap-6 md:gap-8 text-left">
 				<div class="p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-amber-500/50 transition-all text-left">
-					<h4 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-amber-500 uppercase tracking-tighter">Safe Sanctuary</h4>
-					<p class="text-gray-400 text-sm md:text-base font-medium leading-relaxed">A barrier-free environment where every artisan feels safe, seen, and supported.</p>
+					<h4 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-amber-500 uppercase tracking-tighter text-left">Safe Sanctuary</h4>
+					<p class="text-gray-400 text-sm md:text-base font-medium leading-relaxed text-left">A barrier-free environment where every artisan feels safe, seen, and supported.</p>
 				</div>
-				<div class="p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-amber-500/50 transition-all text-left">
-					<h4 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-amber-500 uppercase tracking-tighter">Skill Autonomy</h4>
-					<p class="text-gray-400 text-sm md:text-base font-medium leading-relaxed">Empowering artisans with mastery of handmade batik, moving from charity to independence.</p>
+				<div class="p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-amber-500/50 transition-all text-left text-left text-left">
+					<h4 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-amber-500 uppercase tracking-tighter text-left">Skill Autonomy</h4>
+					<p class="text-gray-400 text-sm md:text-base font-medium leading-relaxed text-left text-left">Empowering artisans with professional mastery of handmade batik, moving from charity to sustainable independence.</p>
 				</div>
-				<div class="p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-amber-500/50 transition-all text-left">
-					<h4 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-amber-500 uppercase tracking-tighter">Ethical Heritage</h4>
-					<p class="text-gray-400 text-sm md:text-base font-medium leading-relaxed">Preserving authentic "Batik Tulis" as a universal language transcending boundaries.</p>
+				<div class="p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-amber-500/50 transition-all text-left text-left text-left text-left">
+					<h4 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-amber-500 uppercase tracking-tighter text-left">Ethical Heritage</h4>
+					<p class="text-gray-400 text-sm md:text-base font-medium leading-relaxed text-left">Preserving the authentic "Batik Tulis" technique as a universal language that transcends physical boundaries.</p>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<!-- SECTION 4: ARTISTRY (FIXED CHAINING) -->
+	<!-- SECTION 4: ARTISTRY -->
 	<section id="artistry" class="py-20 md:py-32 bg-[#fafafa]">
 		<div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 md:gap-20 items-center text-left">
-			<div class="relative order-1">
+			<div class="relative order-1 text-left text-left text-left">
 				<div class="aspect-square bg-white p-3 md:p-4 rounded-[2rem] md:rounded-[3rem] shadow-xl rotate-3 overflow-hidden text-left">
-					<img src={data?.artistryImage ? urlFor(data.artistryImage)?.width(800).format('webp').url() || fallbackArt : fallbackArt} alt="Batik Detail" loading="lazy" class="w-full h-full object-cover rounded-[1.5rem] md:rounded-[2.5rem]">
+					<img src={data.artistryImage ? urlFor(data.artistryImage as any)!.width(800).format('webp').url() : fallbackArt} alt="Batik Detail" loading="lazy" class="w-full h-full object-cover rounded-[1.5rem] md:rounded-[2.5rem]">
 				</div>
 				<div class="absolute -top-4 -right-4 md:-top-6 md:-right-6 bg-amber-50 border border-amber-200 p-4 md:p-6 rounded-2xl md:rounded-3xl shadow-lg max-w-[140px] md:max-w-[180px] text-left">
-					<p class="text-[10px] md:text-xs font-black text-amber-900 uppercase mb-1 md:mb-2">Technique</p>
-					<p class="text-[11px] md:text-sm italic font-medium leading-tight text-gray-700">"Batik Tulis" — Authentically hand-drawn wax resist.</p>
+					<p class="text-[10px] md:text-xs font-black text-amber-900 uppercase mb-1 md:mb-2 text-left text-left text-left">Technique</p>
+					<p class="text-[11px] md:text-sm italic font-medium leading-tight text-gray-700 text-left text-left">"Batik Tulis" — Authentically hand-drawn wax resist.</p>
 				</div>
 			</div>
-			<div class="space-y-6 md:space-y-8 order-2">
-				<h2 class="text-amber-800 font-black text-xs md:text-sm uppercase tracking-widest">The Artistry</h2>
-				<h3 class="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">Authentic Heritage.</h3>
-				<p class="text-base md:text-lg text-gray-600 font-medium leading-relaxed">We honor the "Slow Process." Every piece of batik is a labor of love, hand-drawn using techniques passed down through generations.</p>
+			<div class="space-y-6 md:space-y-8 order-2 text-left">
+				<h2 class="text-amber-800 font-black text-xs md:text-sm uppercase tracking-widest text-left">The Artistry</h2>
+				<h3 class="text-3xl md:text-5xl font-bold text-gray-900 text-left leading-tight text-left">Authentic Heritage.</h3>
+				<p class="text-base md:text-lg text-gray-600 font-medium leading-relaxed text-left text-left">We honor the "Slow Process." Every piece of batik is a labor of love, hand-drawn using techniques passed down through generations.</p>
 			</div>
 		</div>
 	</section>
@@ -161,17 +161,12 @@ const fallbackArt = "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?a
 	<!-- SECTION 5: CONNECT -->
 	<section id="connect" class="py-16 md:py-32 bg-white px-4">
 		<div class="max-w-6xl mx-auto bg-amber-50 rounded-[2.5rem] md:rounded-[4rem] p-8 md:p-24 space-y-8 md:space-y-10 text-left">
-			<h2 class="text-3xl md:text-6xl font-extrabold text-gray-900 leading-tight">Let’s Grow Together.</h2>
-			<p class="text-lg md:text-xl text-gray-600 max-w-2xl font-medium leading-relaxed">Whether you are looking for inclusive tourism, creative partnerships, or global collaboration, our doors are always open.</p>
-			<div class="flex flex-col sm:flex-row gap-4">
-				<a href="https://wa.me/6281290098389" target="_blank" class="px-8 py-4 bg-[#78350f] text-white rounded-xl md:rounded-2xl font-bold text-base md:text-lg no-underline shadow-xl text-center hover:bg-black transition-all">Partner With Us</a>
-				<a href="mailto:hello@difabelzone.id" class="px-8 py-4 bg-white text-gray-900 border-2 border-gray-200 rounded-xl md:rounded-2xl font-bold text-base md:text-lg no-underline text-center hover:bg-gray-50 transition-all">Email Inquiry</a>
+			<h2 class="text-3xl md:text-6xl font-extrabold text-gray-900 leading-tight text-left">Let’s Grow Together.</h2>
+			<p class="text-lg md:text-xl text-gray-600 max-w-2xl font-medium leading-relaxed text-left">Whether you are looking for inclusive tourism, creative partnerships, or global collaboration, our doors are always open.</p>
+			<div class="flex flex-col sm:flex-row gap-4 text-left">
+				<a href={`https://wa.me/${data?.contactWhatsapp || '628157902425'}`} target="_blank" class="px-8 py-4 bg-[#78350f] text-white rounded-xl md:rounded-2xl font-bold text-base md:text-lg no-underline shadow-xl text-center hover:bg-black transition-all">Partner With Us</a>
+				<a href={`mailto:${data?.contactEmail || 'difabelzone.id@gmail.com'}`} class="px-8 py-4 bg-white text-gray-900 border-2 border-gray-200 rounded-xl md:rounded-2xl font-bold text-base md:text-lg no-underline text-center hover:bg-gray-50 transition-all">Email Inquiry</a>
 			</div>
 		</div>
 	</section>
-
-	<footer class="py-12 md:py-20 bg-gray-50 border-t border-gray-100 text-center space-y-4">
-		<h2 class="text-xl md:text-2xl font-bold text-amber-900 font-sans">Difabelzone Indonesia</h2>
-		<p class="text-gray-400 text-xs md:text-sm font-medium font-sans px-6">&copy; 2024 Difabelzone Indonesia. All rights reserved. Yogyakarta, Indonesia.</p>
-	</footer>
 </MainLayout>

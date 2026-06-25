@@ -11,42 +11,41 @@ interface Props {
 	image?: string | ImageMetadata;
 }
 
-// Menggunakan Astro.site jika sudah diatur di astro.config.mjs, jika belum pakai Astro.url
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url);
-
 const { title, description, image = FallbackImage } = Astro.props;
 
-// Logika penentuan URL gambar untuk Social Media Preview
-const socialImageURL = typeof image === 'string' 
-	? new URL(image, Astro.url) 
-	: new URL(image.src, Astro.url);
+let socialImageURL: string;
+if (typeof image === 'string') {
+    socialImageURL = new URL(image, Astro.url).toString();
+} else {
+    socialImageURL = new URL(image.src, Astro.url).toString();
+}
 
-// --- STRUCTURED DATA (JSON-LD) ---
-// Memberitahu Google secara eksplisit bahwa ini adalah website NGO/Yayasan
 const schemaData = {
   "@context": "https://schema.org",
   "@type": "NGO",
   "name": "Difabelzone Indonesia",
   "alternateName": "Difi Foundation",
-  "url": Astro.site || "https://difabelzone-indonesia.vercel.app",
-  "logo": new URL("/favicon.svg", Astro.url),
+  "url": Astro.site?.toString() || "https://difabelzone-indonesia.vercel.app",
+  "logo": new URL("/favicon.png", Astro.url).toString(), // Mengarah ke logo emas
   "description": description,
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Yogyakarta",
     "addressCountry": "ID"
   },
-  "sameAs": [
-    "https://www.instagram.com/difabelzone.id" // Tambahkan link sosmed resmi nanti
-  ]
+  "sameAs": ["https://www.instagram.com/difabelzone.id"]
 };
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
+
+<!-- FAVICON (LOGO EMAS DI TAB BROWSER) -->
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/favicon.png" />
 
 <!-- Robots & Indexing -->
 <link rel="sitemap" href="/sitemap-index.xml" />
@@ -79,8 +78,8 @@ const schemaData = {
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={socialImageURL} />
 
-<!-- Theme Color untuk Mobile Browser (Chrome Android) -->
+<!-- Theme Color Mobile -->
 <meta name="theme-color" content="#78350f" />
 
-<!-- JSON-LD Structured Data Script -->
+<!-- JSON-LD Script -->
 <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />

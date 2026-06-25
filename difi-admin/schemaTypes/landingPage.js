@@ -53,6 +53,19 @@ export default {
       type: 'image',
       title: 'Foto Karya Batik (Section Artistry)',
       options: { hotspot: true }
+    },
+    {
+      name: 'contactEmail',
+      type: 'string',
+      title: 'Email Kontak',
+      initialValue: 'difabelzone.id@gmail.com'
+    },
+    {
+      name: 'contactWhatsapp',
+      type: 'string',
+      title: 'Nomor WhatsApp',
+      description: 'Gunakan format 628123456xxx (tanpa tanda +)',
+      initialValue: '628157902425'
     }
   ]
 }
